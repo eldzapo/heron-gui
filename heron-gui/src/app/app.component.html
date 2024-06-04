@@ -1,0 +1,12 @@
+<mat-drawer-container>
+  <mat-drawer mode="side" opened>
+    <heron-side-nav></heron-side-nav>
+  </mat-drawer>
+  <mat-drawer-content>
+
+    <h1>Welcome pages</h1>   
+    <button (click)="getHelloText()">text</button>
+
+    <router-outlet />
+  </mat-drawer-content>
+</mat-drawer-container>
