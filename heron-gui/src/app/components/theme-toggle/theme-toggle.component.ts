@@ -10,16 +10,15 @@ import { ThemeService } from '../../service/theme/theme.service';
   template: `<button mat-icon-button (click)="toggleTheme()">
   <mat-icon>{{ isDarkMode ? 'wb_sunny' : 'nights_stay' }}</mat-icon>
 </button>`,
-  styleUrl: './theme-toggle.component.scss'
 })
 export class ThemeToggleComponent {
-  isDarkMode: boolean;
+ protected isDarkMode: boolean;
 
   constructor(private themeService: ThemeService) {
     this.isDarkMode = this.themeService.isDarkMode();
   }
 
-  toggleTheme() {
+  protected toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     this.themeService.setDarkMode(this.isDarkMode);
   }

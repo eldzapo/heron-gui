@@ -5,6 +5,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { ThemeService } from './service/theme/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +15,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'heron-gui';
+  protected title = 'heron-gui';
+  protected helloText = {};
 
-  helloText = {};
-
-  constructor(private oauthService: OAuthService, private httpClient: HttpClient) { }
+  constructor(
+    private oauthService: OAuthService, 
+    private httpClient: HttpClient,
+  ) { 
+  }
 
   getHelloText() {
     this.httpClient.get('http://localhost:8080/api/sessions/generate', {

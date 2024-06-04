@@ -1,3 +1,21 @@
-mat-drawer-container {
-    height: 100vh;
-}
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  mat-drawer-container {
+    height: 100%;
+    width: 100%;
+  }
+  
+  mat-drawer {
+    min-width: 150px;
+    width: auto;
+  }
+  
+  mat-drawer-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
