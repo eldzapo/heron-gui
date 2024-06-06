@@ -1,7 +1,25 @@
 .main {
   display: flex;
   flex-direction: column;
-  background-color: grey;
+  background-color: #ffffff;
   height: 100%;
   width: 100%;
+}
+
+.bottom{
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  align-items: center;
+
+  button {
+    margin-bottom: 10px;
+  }
+}
+
+.logo {
+  height: 50px;
+  width: 100px;
+
 }

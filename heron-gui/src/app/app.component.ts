@@ -6,6 +6,7 @@ import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.com
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ThemeService } from './service/theme/theme.service';
+import { Link } from './util/types/link.interface';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,30 @@ import { ThemeService } from './service/theme/theme.service';
 export class AppComponent {
   protected title = 'heron-gui';
   protected helloText = {};
+
+  protected LINKS: Link[] = [
+    {
+      "id":1,
+      "title":"Sessions",
+      "description": "Sessions list",
+      "icon":"exercise",
+      "path":"sessions-list"
+    },
+    {
+      "id":2,
+      "title":"Profile",
+      "description": "Profile",
+      "icon":"account_circle",
+      "path":"user-profile"
+    },
+    {
+      "id":3,
+      "title":"About",
+      "description": "About",
+      "icon":"description",
+      "path":"how-it-works"
+    }
+  ]
 
   constructor(
     private oauthService: OAuthService, 

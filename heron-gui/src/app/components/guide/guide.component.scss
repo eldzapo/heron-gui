@@ -1,0 +1,13 @@
+.main {
+    padding: 10px 10px 0 10px ;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.main:hover{
+    background-color: rgba(184, 179, 255, 0.534);
+    cursor: pointer;
+    border-radius: 10px;
+    margin:0 5px;
+}

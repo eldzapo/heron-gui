@@ -1,4 +1,16 @@
 <div class="main">
-  <button (click)="logout()">LOGOUT</button>
-  <heron-theme-toggle></heron-theme-toggle>
+
+  <img src="" alt="telovadnica" class="logo"/>
+
+  <div *ngFor="let link of links">
+    <heron-guide [data]="link"></heron-guide>
+  </div>
+
+  <div class="bottom">
+    <button mat-fab color="primary" >
+      <mat-icon (click)="logout()">delete</mat-icon>
+    </button>
+    <heron-theme-toggle></heron-theme-toggle>
+  </div>
+  
 </div>
