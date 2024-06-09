@@ -1,0 +1,12 @@
+<form (ngSubmit)="onSubmit()">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" [(ngModel)]="USER.name" required>
+  
+    <label for="surname">Surname:</label>
+    <input type="text" id="surname" name="surname" [(ngModel)]="USER.surname" required>
+  
+    <!-- Add other form fields for other properties in USER -->
+  
+    <button type="submit">Submit</button>
+  </form>
+  

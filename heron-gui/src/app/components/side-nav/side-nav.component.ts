@@ -23,6 +23,7 @@ export class SideNavComponent {
   constructor(private oauthService: OAuthService){}
 
   protected logout() {
+    console.log('click')
     this.oauthService.logOut();
   }
 

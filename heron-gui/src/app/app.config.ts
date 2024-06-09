@@ -9,7 +9,7 @@ export const authCodeFlowConfig: AuthConfig = {
   issuer: 'http://localhost:9090/realms/heron',
   tokenEndpoint: 'http://localhost:9090/realms/heron/protocol/openid-connect/token',
   redirectUri: window.location.origin,
-  clientId: 'chaplja',
+  clientId: 'heron',
   responseType: 'code',
   scope: 'openid profile',
   showDebugInformation: true,

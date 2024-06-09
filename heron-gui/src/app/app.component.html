@@ -4,8 +4,9 @@
   </mat-drawer>
   <mat-drawer-content>
 
-    <h1>Welcome pages</h1>   
-    <button (click)="getHelloText()">text</button>
+    <h1>Dobrodošel {{fullName}}</h1>
+    
+    <button (click)="getHelloSessions()">sessions</button>
 
     <router-outlet />
   </mat-drawer-content>
