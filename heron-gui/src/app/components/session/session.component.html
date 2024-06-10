@@ -1,11 +1,12 @@
 
 <mat-card>
     <mat-card-header>
-      <mat-card-title>Popoldanski termin</mat-card-title>
-      <div class="date"> 
-        <mat-card-subtitle *ngIf="data?.startDate">Start {{ formatDateTime(data?.startDate)}}</mat-card-subtitle>
-        <mat-card-subtitle *ngIf="data?.endDate">Konec {{formatDateTime(data?.endDate)}}</mat-card-subtitle>
-    </div>
+      <mat-card-title> {{ getTimeSlot(formatDateTime(data?.startDate)) }}</mat-card-title>
+    <mat-card-content class="date">
+      <p *ngIf="data?.startDate">Start {{ formatDateTime(data?.startDate)}}</p>
+      <mat-divider></mat-divider>
+      <p *ngIf="data?.endDate">Konec {{formatDateTime(data?.endDate)}} </p>
+    </mat-card-content>
     </mat-card-header>
     <mat-card-actions>
       <button mat-flat-button color="primary">Reserve</button>

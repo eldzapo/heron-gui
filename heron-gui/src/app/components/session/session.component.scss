@@ -4,8 +4,8 @@ mat-card-header{
 
     .date{
         display: flex;
-
-        mat-card-subtitle {
+        flex-direction: column;
+        p {
             margin-left: 10px;
         }
     }

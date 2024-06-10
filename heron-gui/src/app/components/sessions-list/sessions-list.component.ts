@@ -18,10 +18,9 @@ import {format} from 'date-fns/format';
 export class SessionsListComponent implements OnInit {
   protected filteredSessions$: Observable<Session[]> | undefined;
   private currentDateSubject: BehaviorSubject<Date>;
-  currentDate$: Observable<Date>;
+  protected currentDate$: Observable<Date>;
   private sessions: Session[] = [];
-  loading = true;
-  error: string | null = null;
+  protected loading = true;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -35,7 +34,7 @@ export class SessionsListComponent implements OnInit {
     this.loadAndFilterSessions();
   }
 
-  loadAndFilterSessions(): void {
+ protected loadAndFilterSessions(): void {
     const todayDate = this.getFormattedDate(this.currentDateSubject.getValue());
     this.sessionService.getHelloSessions().subscribe((result: { [key: string]: Session[] }) => {
       for (const key in result) {
@@ -49,16 +48,16 @@ export class SessionsListComponent implements OnInit {
     });
   }
 
-  getFormattedDate(date: Date): string {
+ private getFormattedDate(date: Date): string {
     return date.toISOString().slice(0, 10);
   }
 
-  formatDateTime(date: Date | null): string {
+ protected formatDateTime(date: Date | null): string {
     if (!date) { return ''}
     return format(date, "dd/MM/yyyy");
   }
 
-  goToNextDay(): void {
+  protected goToNextDay(): void {
     const currentDate = this.currentDateSubject.getValue();
     const nextDate = new Date(currentDate);
     nextDate.setDate(nextDate.getDate() + 1);
@@ -72,7 +71,7 @@ export class SessionsListComponent implements OnInit {
     }
   }
   
-  goToPreviousDay(): void {
+  protected goToPreviousDay(): void {
     const currentDate = this.currentDateSubject.getValue();
     const prevDate = new Date(currentDate);
     prevDate.setDate(prevDate.getDate() - 1);
