@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import { ThemeService } from '../../service/theme/theme.service';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 @Component({
   selector: 'heron-theme-toggle',
   standalone: true,
-  imports: [MatIconModule],
-  template: `<button mat-icon-button (click)="toggleTheme()">
-  <mat-icon>{{ isDarkMode ? 'wb_sunny' : 'nights_stay' }}</mat-icon>
-</button>`,
+  imports: [MatIconModule, MatSlideToggleModule],
+  template: `<mat-slide-toggle  (click)="toggleTheme()">
+          </mat-slide-toggle>`,
 })
 export class ThemeToggleComponent {
  protected isDarkMode: boolean;

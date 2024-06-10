@@ -4,6 +4,10 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { AuthConfig, OAuthService, provideOAuthClient } from 'angular-oauth2-oidc';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideStore } from '@ngrx/store';
+import { userReducer } from './store/reducers/user.reducers';
+import { provideEffects } from '@ngrx/effects';
+import { UserEffects } from './store/effects/user.effects';
 
 export const authCodeFlowConfig: AuthConfig = {
   issuer: 'http://localhost:9090/realms/heron',
@@ -25,7 +29,9 @@ function initializeOAuth(oauthService: OAuthService): Promise<void> {
 }
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideHttpClient(), provideOAuthClient(),  {
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideHttpClient(), provideOAuthClient(),  provideStore({ user: userReducer }),
+    provideEffects([UserEffects]),
+    {
     provide: APP_INITIALIZER,
     useFactory: (oauthService: OAuthService) => {
       return () => {
@@ -36,5 +42,6 @@ export const appConfig: ApplicationConfig = {
     deps: [
       OAuthService
     ]
-  }, provideAnimationsAsync()]
+  },
+   provideAnimationsAsync()]
 };

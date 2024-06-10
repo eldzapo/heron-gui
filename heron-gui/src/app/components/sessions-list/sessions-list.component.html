@@ -1,1 +1,14 @@
 <p>sessions-list works!</p>
+<p>{{ today }}</p>
+
+<ng-container *ngIf="(filteredSessions$ | async) as filteredSessions">
+    <ng-container *ngIf="filteredSessions.length > 0; else noSessions">
+      <div *ngFor="let session of filteredSessions">
+        <heron-session [data]="session"></heron-session>
+      </div>
+    </ng-container>
+    <ng-template #noSessions>
+      <p>No sessions found for today.</p>
+    </ng-template>
+  </ng-container>
+  

@@ -1,12 +1,17 @@
-  <mat-drawer-container>
+<mat-drawer-container>
   <mat-drawer mode="side" opened>
     <heron-side-nav [links]="LINKS"></heron-side-nav>
   </mat-drawer>
   <mat-drawer-content>
 
-    <h1>Dobrodošel {{fullName}}</h1>
-    
-    <button (click)="getHelloSessions()">sessions</button>
+    <h1>Dobrodošel</h1>
+        
+    <div *ngIf="loading$ | async">Loading...</div>
+<div *ngIf="(user$ | async) as user">
+  <p>Name: {{ user.name }}</p>
+  <p>Surname: {{ user.surname }}</p>
+  <!-- Add other user fields here -->
+</div>    
 
     <router-outlet />
   </mat-drawer-content>

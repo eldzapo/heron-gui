@@ -1,57 +1,55 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { Observable, of } from 'rxjs';
+import { Session } from '../../util/types/sessions.interface';
+import { UserService } from '../../service/user.service';
+import { CommonModule } from '@angular/common';
+import { SessionComponent } from '../session/session.component';
 
 @Component({
   selector: 'heron-sessions-list',
+  standalone: true,
   templateUrl: './sessions-list.component.html',
-  styleUrls: ['./sessions-list.component.scss']
+  styleUrls: ['./sessions-list.component.scss'],
+  imports: [
+    CommonModule, SessionComponent
+  ]
 })
 export class SessionsListComponent implements OnInit {
-
-  sessions: any[] = [];
-  loading: boolean = true;
+  filteredSessions$: Observable<Session[]> | undefined;
+  today = '';
+  private sessions: Session[] = [];
+  loading = true;
   error: string | null = null;
 
   constructor(
-    private oauthService: OAuthService,
-    private httpClient: HttpClient,
-    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
-  ) { }
+    private cdr: ChangeDetectorRef,
+    private sessionService: UserService
+  ) {}
 
   ngOnInit(): void {
-    this.getHelloSessions();
-  }
-
-  protected getHelloSessions() {
-    this.httpClient.get<{ data: any[] }>('http://localhost:8080/api/sessions/generate', {
-      headers: {
-        'Authorization': `Bearer ${this.oauthService.getAccessToken()}`
-      }
-    }).subscribe({
-      next: result => {
-        this.sessions = result.data;
-        this.loading = false;
-        this.cdr.detectChanges(); // Manually trigger change detection
-      },
-      error: err => {
-        this.error = 'Failed to fetch sessions.';
-        this.loading = false;
-        this.cdr.detectChanges(); // Manually trigger change detection
-      }
-    });
+    this.loadAndFilterSessions();
   }
 
   protected getTodayDate(): string {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return today.toISOString().slice(0, 10);
   }
 
-  getSessionsForToday(): any[] {
-    const todayDate = this.getTodayDate();
-    return this.sessions.filter(session => session.date === todayDate);
+  loadAndFilterSessions(): void {
+    this.sessionService.getHelloSessions().subscribe((result: { [key: string]: Session[] }) => {
+      console.log('All Sessions:', result);
+
+      const todayDate = this.getTodayDate();
+
+      for (const key in result) {
+        if (result.hasOwnProperty(key) && key === todayDate) {
+          this.sessions = result[key];
+          this.filteredSessions$ = of(this.sessions);
+          console.log('Filtered Sessions for Today:', this.filteredSessions$);
+          this.cdr.detectChanges();
+          return;
+        }
+      }
+    });
   }
 }

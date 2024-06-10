@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, inject, Pipe, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
@@ -8,17 +8,32 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { Link } from './util/types/link.interface';
 import { UserService } from './service/user.service';
 import { User } from './util/types/user.interface';
+import { Store } from '@ngrx/store';
+import { Observable, map, tap } from 'rxjs';
+import * as UserActions from './store/actions/user.actions'
+import { AsyncPipe, NgIf } from '@angular/common';
+import { loadAuth } from './store/actions/auth.actions';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ThemeToggleComponent, SideNavComponent, MatSidenavModule],
+  imports: [RouterOutlet, ThemeToggleComponent, SideNavComponent, MatSidenavModule, NgIf, AsyncPipe,],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers:[Store]
 })
 export class AppComponent implements OnInit{
   protected title = 'heron-gui';
   protected fullName = '';
+  protected user$: Observable<User | null> | undefined;
+  protected loading$: Observable<boolean> | undefined;
+  protected token$: Observable<boolean> | undefined;
+  protected tokenLoading$: Observable<boolean> | undefined;
+
+  private store = inject(Store<{ user: { user: User | null, loading: boolean } }>);
+
+  public isAuthenticated = false;
+
 
   protected LINKS: Link[] = [
     {
@@ -46,11 +61,13 @@ export class AppComponent implements OnInit{
 
   constructor(
     private oauthService: OAuthService,
-    private httpClient: HttpClient,
-    private userService: UserService,
-    private cdr: ChangeDetectorRef
-  ) { };
-
+  ) { 
+    this.token$ = this.store.select(state => state.auth.token);
+    this.tokenLoading$ = this.store.select(state => state.auth.loading)
+    this.user$ = this.store.select(state => state.user.user);
+    this.loading$ = this.store.select(state => state.user.loading);
+    this.store.dispatch(loadAuth());
+  };
 
   protected removeIssParameter() {
         const url = new URL(window.location.href);
@@ -60,24 +77,8 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     window.onload = this.removeIssParameter;
+    this.store.dispatch(UserActions.loadUser());
+    this.store.dispatch(loadAuth());
   }
 
-  protected getUser() {
-    console.log('test')
-    this.userService.getKeyCloakUser().subscribe(user => {
-      console.log('User data:', user);
-      this.cdr.detectChanges(); // Manually trigger change detection
-    });
-  }
-
-
-  getHelloSessions() {
-    this.httpClient.get<{ data: any[] }>('http://localhost:8080/api/sessions/generate', {
-      headers: {
-        'Authorization': `Bearer ${this.oauthService.getAccessToken()}`
-      }
-    }).subscribe(result => {
-      console.log(result);
-    });
-  }
 }
