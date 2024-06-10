@@ -13,5 +13,9 @@ mat-card-header{
 
 mat-card{
     margin: 10px 0;
-    width: 50%;
+}
+
+mat-card:hover{
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.116);
 }

@@ -1,5 +1,9 @@
-<p>sessions-list works!</p>
-<p>{{ today }}</p>
+<div class="container"> 
+<div>
+  <button (click)="goToPreviousDay()">Previous Day</button>
+  {{currentDate$ | async}}
+  <button (click)="goToNextDay()">Next Day</button>
+</div>
 
 <ng-container *ngIf="(filteredSessions$ | async) as filteredSessions">
     <ng-container *ngIf="filteredSessions.length > 0; else noSessions">
@@ -11,4 +15,4 @@
       <p>No sessions found for today.</p>
     </ng-template>
   </ng-container>
-  
+</div>

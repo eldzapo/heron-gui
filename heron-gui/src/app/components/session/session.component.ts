@@ -14,12 +14,5 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class SessionComponent {
   @Input() data : Session | null = null
-
-  protected formatDate(date: Date | undefined): string {
-    console.log(date)
-    if (!date) return '';
-    const formattedDate = "hello"
-    return formattedDate || '';
-  }
   
 }
