@@ -5,6 +5,9 @@ import { UserService } from '../../service/user.service';
 import { CommonModule } from '@angular/common';
 import { SessionComponent } from '../session/session.component';
 import {format} from 'date-fns/format';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'heron-sessions-list',
@@ -12,7 +15,7 @@ import {format} from 'date-fns/format';
   templateUrl: './sessions-list.component.html',
   styleUrls: ['./sessions-list.component.scss'],
   imports: [
-    CommonModule, SessionComponent
+    CommonModule, SessionComponent,MatIconModule,MatButtonModule,MatTooltipModule
   ]
 })
 export class SessionsListComponent implements OnInit {

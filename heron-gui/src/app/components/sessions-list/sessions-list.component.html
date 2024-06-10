@@ -1,9 +1,22 @@
 <div class="container"> 
-<div>
-  <button (click)="goToPreviousDay()">Previous Day</button>
-  {{ formatDateTime(currentDate$ | async) }}
-  <button (click)="goToNextDay()">Next Day</button>
-</div>
+
+  <div class="picker">
+
+    <button mat-icon-button (click)="goToPreviousDay()"
+         matTooltip="Prejšni dan"
+          matTooltipHideDelay="100">
+      <span class="material-symbols-outlined">arrow_back_ios</span>
+    </button>
+
+    <h5> {{ formatDateTime(currentDate$ | async) }} </h5>
+
+    <button mat-icon-button (click)="goToNextDay()" 
+         matTooltip="Naslednji dan"
+          matTooltipHideDelay="100">
+      <span class="material-symbols-outlined">arrow_forward_ios</span>
+    </button>
+
+  </div>
 
 <ng-container *ngIf="(filteredSessions$ | async) as filteredSessions">
     <ng-container *ngIf="filteredSessions.length > 0; else noSessions">

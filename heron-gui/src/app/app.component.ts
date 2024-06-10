@@ -6,18 +6,19 @@ import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.com
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Link } from './util/types/link.interface';
-import { UserService } from './service/user.service';
 import { User } from './util/types/user.interface';
 import { Store } from '@ngrx/store';
 import { Observable, map, tap } from 'rxjs';
 import * as UserActions from './store/actions/user.actions'
 import { AsyncPipe, NgIf } from '@angular/common';
 import { loadAuth } from './store/actions/auth.actions';
+import {MatToolbarModule} from '@angular/material/toolbar';
+ 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ThemeToggleComponent, SideNavComponent, MatSidenavModule, NgIf, AsyncPipe,],
+  imports: [RouterOutlet, ThemeToggleComponent, SideNavComponent, MatSidenavModule, NgIf, AsyncPipe,MatToolbarModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers:[Store]
