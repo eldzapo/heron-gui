@@ -1,7 +1,7 @@
 <div class="container"> 
 <div>
   <button (click)="goToPreviousDay()">Previous Day</button>
-  {{currentDate$ | async}}
+  {{ formatDateTime(currentDate$ | async) }}
   <button (click)="goToNextDay()">Next Day</button>
 </div>
 

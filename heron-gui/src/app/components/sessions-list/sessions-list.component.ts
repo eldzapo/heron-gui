@@ -4,6 +4,7 @@ import { Session } from '../../util/types/sessions.interface';
 import { UserService } from '../../service/user.service';
 import { CommonModule } from '@angular/common';
 import { SessionComponent } from '../session/session.component';
+import {format} from 'date-fns/format';
 
 @Component({
   selector: 'heron-sessions-list',
@@ -37,12 +38,10 @@ export class SessionsListComponent implements OnInit {
   loadAndFilterSessions(): void {
     const todayDate = this.getFormattedDate(this.currentDateSubject.getValue());
     this.sessionService.getHelloSessions().subscribe((result: { [key: string]: Session[] }) => {
-      console.log('All Sessions:', result);
       for (const key in result) {
         if (result.hasOwnProperty(key) && key === todayDate) {
           this.sessions = result[key];
           this.filteredSessions$ = of(this.sessions);
-          console.log('Filtered Sessions for Today:', this.filteredSessions$);
           this.cdr.detectChanges();
           return;
         }
@@ -54,32 +53,34 @@ export class SessionsListComponent implements OnInit {
     return date.toISOString().slice(0, 10);
   }
 
+  formatDateTime(date: Date | null): string {
+    if (!date) { return ''}
+    return format(date, "dd/MM/yyyy");
+  }
+
   goToNextDay(): void {
     const currentDate = this.currentDateSubject.getValue();
     const nextDate = new Date(currentDate);
     nextDate.setDate(nextDate.getDate() + 1);
   
-    // Check if nextDate is not beyond 30 days from today
     const thirtyDaysFromToday = new Date();
     thirtyDaysFromToday.setDate(thirtyDaysFromToday.getDate() + 30);
     if (nextDate <= thirtyDaysFromToday) {
       this.currentDateSubject.next(nextDate);
       this.loadAndFilterSessions();
-      this.cdr.detectChanges(); // Manually trigger change detection
+      this.cdr.detectChanges();
     }
   }
-  
   
   goToPreviousDay(): void {
     const currentDate = this.currentDateSubject.getValue();
     const prevDate = new Date(currentDate);
     prevDate.setDate(prevDate.getDate() - 1);
   
-    // Check if prevDate is not older than today
     if (prevDate >= new Date()) {
       this.currentDateSubject.next(prevDate);
       this.loadAndFilterSessions();
-      this.cdr.detectChanges(); // Manually trigger change detection
+      this.cdr.detectChanges(); 
     }
   }  
   

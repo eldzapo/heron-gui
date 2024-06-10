@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { Session } from '../../util/types/sessions.interface';
 import {MatCardModule} from '@angular/material/card';
 import { CommonModule } from '@angular/common';
-import { CustomDateFormatPipe } from '../../pipes/custom-date-format.pipe.spec';
 import { MatButtonModule } from '@angular/material/button';
+import {format} from 'date-fns/format';
 
 @Component({
   selector: 'heron-session',
@@ -13,6 +13,11 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './session.component.scss'
 })
 export class SessionComponent {
-  @Input() data : Session | null = null
+  @Input() data : Session | null = null;
+
+  formatDateTime(date: Date | null | undefined): string {
+    if (!date) { return ''}
+    return format(date, "HH:mm dd/MM/yyyy");
+  }
   
 }
