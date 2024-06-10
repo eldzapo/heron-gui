@@ -34,6 +34,7 @@ export class SessionsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentDateSubject.next(new Date());
     this.loadAndFilterSessions();
   }
 
