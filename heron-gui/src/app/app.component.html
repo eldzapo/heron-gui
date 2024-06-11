@@ -5,16 +5,13 @@
   <mat-drawer-content>
     
     <mat-toolbar>
-      <span>Dobrodošel</span>
+      <h3>Dobrodošel</h3>     
+       <div *ngIf="(user$ | async) as user" class="user">
+        <h3>{{ user.name }}</h3>
+        <h3>{{ user.surname }}</h3>
+      </div>
     </mat-toolbar>
         
-    <div *ngIf="loading$ | async">Loading...</div>
-      <div *ngIf="(user$ | async) as user">
-        <p>Name: {{ user.name }}</p>
-        <p>Surname: {{ user.surname }}</p>
-        <!-- Add other user fields here -->
-      </div>    
-
     <router-outlet />
   </mat-drawer-content>
 </mat-drawer-container>

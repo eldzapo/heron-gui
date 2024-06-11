@@ -26,7 +26,19 @@ html, body {
   mat-toolbar {
     position: relative;
     background-color: #005cbb;
-    height: 50px;
+    min-height: 50px;
     margin-bottom: 15px;
     z-index: -10;
+  }
+
+
+  h3{
+    color: white;
+  }
+
+  .user{
+    display: flex;
+    h3 {
+      margin-left: 4px;
+    }
   }

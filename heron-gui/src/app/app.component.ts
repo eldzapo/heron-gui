@@ -35,7 +35,6 @@ export class AppComponent implements OnInit{
 
   public isAuthenticated = false;
 
-
   protected LINKS: Link[] = [
     {
       id: 1,
