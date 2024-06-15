@@ -11,3 +11,10 @@
     border-radius: 10px;
     margin:0 5px;
 }
+
+.main.active {
+    background-color: rgba(184, 179, 255, 0.534);
+    border-radius: 10px;
+    margin:0 5px;
+    color: #01695d; /* Text color for active link */
+  }

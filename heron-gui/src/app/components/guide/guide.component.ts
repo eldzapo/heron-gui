@@ -18,12 +18,16 @@ export class GuideComponent {
   
   constructor(private router: Router) {}
 
-  navigateToSessionsList(path: string) {
+  protected navigateToSessionsList(path: string) {
     this.router.navigate([path]);
   }
 
-  isActive(path: string): boolean {
-    const urlTree: UrlTree = this.router.parseUrl(this.router.url);
-    return urlTree.toString() === path;
+  protected isActive(path: string): boolean {
+    const currentPath = this.router.url;
+    return this.normalizePath(currentPath) === this.normalizePath(`/${path}`);
+  }
+
+  private normalizePath(path: string): string {
+    return path.replace(/^\/+|\/+$/g, '');
   }
 }

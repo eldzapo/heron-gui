@@ -79,6 +79,7 @@ export class AppComponent implements OnInit{
     window.onload = this.removeIssParameter;
     this.store.dispatch(UserActions.loadUser());
     this.store.dispatch(loadAuth());
+    this.removeIssParameter();
   }
 
 }
