@@ -79,12 +79,14 @@ export class SessionsListComponent implements OnInit {
     const currentDate = this.currentDateSubject.getValue();
     const prevDate = new Date(currentDate);
     prevDate.setDate(prevDate.getDate() - 1);
-  
-    if (prevDate >= new Date()) {
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Ensure today's date has no time part for comparison
+    if (prevDate >= today) {
       this.currentDateSubject.next(prevDate);
       this.loadAndFilterSessions();
-      this.cdr.detectChanges(); 
+      this.cdr.detectChanges();
     }
-  }  
+  } 
   
 }
