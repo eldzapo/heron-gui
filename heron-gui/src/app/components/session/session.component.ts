@@ -30,6 +30,7 @@ export class SessionComponent {
       width: '250px',
       enterAnimationDuration,
       exitAnimationDuration,
+      data: { session: this.data }
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -6,7 +6,11 @@ import {
   MatDialogClose,
   MatDialogTitle,
   MatDialogContent,
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import { Session } from '../../util/types/sessions.interface';
+
 
 @Component({
   selector: 'heron-dialog',
@@ -15,11 +19,13 @@ import {
     MatDialogActions,
     MatDialogClose,
     MatDialogTitle,
-    MatDialogContent,],
+    MatDialogContent,
+    MatButtonModule],
   template: `<div>
   <h2 mat-dialog-title>Reservation</h2>
-      <mat-dialog-content>
-        Would you like to delete cat.jpeg?
+  <mat-dialog-content>
+        <p>{{ data.session.startDate }}</p>
+        <p>{{ data.session.endDate }}</p>
       </mat-dialog-content>
       <mat-dialog-actions>
         <button mat-button mat-dialog-close>No</button>
@@ -29,5 +35,11 @@ import {
     styleUrl: './dialog.component.scss'
 })
 export class DialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { session: Session }
+  ) {}
+
 
 }
