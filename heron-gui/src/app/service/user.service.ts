@@ -4,7 +4,6 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { User } from '../util/types/user.interface';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Session } from '../util/types/sessions.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,22 +15,22 @@ export class UserService {
   constructor(private oauthService: OAuthService, private httpClient: HttpClient) { }
 
   public getKeyCloakUser(): Observable<User> {
-    return this.httpClient.get<{ firstName: string, lastName: string }>('http://localhost:8080/api/hello', {
+    return this.httpClient.get<{ firstname: string, lastname: string }>('http://localhost:8080/api/user-info', {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
         'Content-type': 'application/json'
       }
     }).pipe(
-     tap(console.log),
       map(result => ({
-        name: result.name,
-        surname: result.lastName,
+        name: result.firstname,
+        surname: result.lastname,
         birthdate: null,
         idCardNumber: null,
         emso: null
       }))
     );
   }
+  
 
   public addUser(user: User): Observable<User> {
     return this.httpClient.post<User>(`${this.apiUrl}/users`, user, {
@@ -44,7 +43,7 @@ export class UserService {
     );
   }
 
-  public getHelloSessions(): Observable<any> { // Change return type to Observable<any>
+  public getHelloSessions(): Observable<any> { 
     return this.httpClient.get(`${this.apiUrl}/api/sessions/generate`, {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`
@@ -53,7 +52,7 @@ export class UserService {
       tap(console.log),
       catchError(error => {
         console.error('Error loading sessions:', error);
-        return of([]); // Return an empty array if there's an error
+        return of([]); 
       })
     );
   }  

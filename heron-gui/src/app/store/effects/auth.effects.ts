@@ -1,32 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { catchError, map, mergeMap } from 'rxjs/operators';
-import { authSuccess, authFailure, loadAuth } from '../actions/auth.actions';
+import { catchError, map, mergeMap, of } from 'rxjs';
+import { UserService } from '../../service/user.service';
+import * as UserActions from '../actions/user.actions';
 
 @Injectable()
-export class AuthEffects {
-  loadAuth$ = createEffect(() =>
+export class UserEffects {
+  loadUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAuth),
-      mergeMap(() =>
-        this.oauthService.loadDiscoveryDocumentAndLogin().then(
-          () => {
-            const token = this.oauthService.getAccessToken();
-            if (token) {
-              return authSuccess({ token });
-            } else {
-              return authFailure({ error: 'No token available' });
-            }
-          },
-          error => authFailure({ error })
-        )
-      )
+      ofType(UserActions.loadUser),
+      mergeMap(() => this.userService.getKeyCloakUser().pipe(
+        map(user => UserActions.loadUserSuccess({ user })),
+        catchError(error => of(UserActions.loadUserFailure({ error })))
+      ))
     )
   );
 
   constructor(
     private actions$: Actions,
-    private oauthService: OAuthService
+    private userService: UserService
   ) {}
 }

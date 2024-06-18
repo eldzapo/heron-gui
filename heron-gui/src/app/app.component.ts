@@ -13,6 +13,7 @@ import * as UserActions from './store/actions/user.actions'
 import { AsyncPipe, NgIf } from '@angular/common';
 import { loadAuth } from './store/actions/auth.actions';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { UserService } from './service/user.service';
  
 
 @Component({
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit{
   protected loading$: Observable<boolean> | undefined;
   protected token$: Observable<boolean> | undefined;
   protected tokenLoading$: Observable<boolean> | undefined;
+  private uservice = inject(UserService);
 
   private store = inject(Store<{ user: { user: User | null, loading: boolean } }>);
 
@@ -60,13 +62,14 @@ export class AppComponent implements OnInit{
   ];
 
   constructor(
-    private oauthService: OAuthService,
   ) { 
     this.token$ = this.store.select(state => state.auth.token);
     this.tokenLoading$ = this.store.select(state => state.auth.loading)
     this.user$ = this.store.select(state => state.user.user);
+    this.user$.subscribe(console.log)
     this.loading$ = this.store.select(state => state.user.loading);
     this.store.dispatch(loadAuth());
+    this.uservice.getKeyCloakUser().subscribe((user) => console.log('app component', user))
   };
 
   protected removeIssParameter() {
