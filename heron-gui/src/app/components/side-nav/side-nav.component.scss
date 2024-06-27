@@ -1,6 +1,7 @@
 .main {
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: #ffffff;
   height: 100%;
   width: 100%;
@@ -19,7 +20,8 @@
 }
 
 .logo {
-  height: 50px;
-  width: 100px;
+  margin: 20px 0;
+  height: 60px;
+  width: 120px;
 
 }

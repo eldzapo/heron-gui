@@ -30,7 +30,15 @@ export class UserService {
       }))
     );
   }
-  
+
+  private checkUserExists(email: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${this.apiUrl}/users/exists/${email}`, {
+      headers: {
+        'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
+        'Content-type': 'application/json'
+      }
+    });
+  }
 
   public addUser(user: User): Observable<User> {
     return this.httpClient.post<User>(`${this.apiUrl}/users`, user, {

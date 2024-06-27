@@ -32,7 +32,6 @@ export class AppComponent implements OnInit{
   protected token$: Observable<boolean> | undefined;
   protected tokenLoading$: Observable<boolean> | undefined;
   private uservice = inject(UserService);
-
   private store = inject(Store<{ user: { user: User | null, loading: boolean } }>);
 
   public isAuthenticated = false;
@@ -61,21 +60,18 @@ export class AppComponent implements OnInit{
     }
   ];
 
-  constructor(
-  ) { 
+  constructor() {
     this.token$ = this.store.select(state => state.auth.token);
-    this.tokenLoading$ = this.store.select(state => state.auth.loading)
+    this.tokenLoading$ = this.store.select(state => state.auth.loading);
     this.user$ = this.store.select(state => state.user.user);
-    this.user$.subscribe(console.log)
     this.loading$ = this.store.select(state => state.user.loading);
-    this.store.dispatch(loadAuth());
-    this.uservice.getKeyCloakUser().subscribe((user) => console.log('app component', user))
-  };
+    this.store.dispatch(UserActions.loadUser());
+  }
 
   protected removeIssParameter() {
-        const url = new URL(window.location.href);
-        url.searchParams.delete('iss');
-        window.history.replaceState({}, document.title, url.pathname);
+    const url = new URL(window.location.href);
+    url.searchParams.delete('iss');
+    window.history.replaceState({}, document.title, url.pathname);
   }
 
   ngOnInit(): void {
