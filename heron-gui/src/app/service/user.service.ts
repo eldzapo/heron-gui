@@ -15,7 +15,7 @@ export class UserService {
   constructor(private oauthService: OAuthService, private httpClient: HttpClient) { }
 
   public getKeyCloakUser(): Observable<User> {
-    return this.httpClient.get<{ firstname: string, lastname: string }>('http://localhost:8080/api/user-info', {
+    return this.httpClient.get<{ firstname: string, lastname: string, email: string}>('http://localhost:8080/api/user-info', {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
         'Content-type': 'application/json'
@@ -24,6 +24,7 @@ export class UserService {
       map(result => ({
         name: result.firstname,
         surname: result.lastname,
+        email : result.email,
         birthdate: null,
         idCardNumber: null,
         emso: null

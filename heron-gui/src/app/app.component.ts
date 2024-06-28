@@ -81,4 +81,10 @@ export class AppComponent implements OnInit{
     this.removeIssParameter();
   }
 
+
+  test(){
+    let us;
+    this.user$?.subscribe((user) => us = user )
+    console.log(us)
+  }
 }
