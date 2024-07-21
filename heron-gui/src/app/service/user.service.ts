@@ -4,18 +4,17 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { User } from '../util/types/user.interface';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import {environment} from '../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
-  public apiUrl = 'http://localhost:8080'
-
+  private apiUrl = environment.apiUrl; 
   constructor(private oauthService: OAuthService, private httpClient: HttpClient) { }
 
   public getKeyCloakUser(): Observable<User> {
-    return this.httpClient.get<{ firstname: string, lastname: string, email: string}>('http://localhost:8080/api/user-info', {
+    return this.httpClient.get<{ firstname: string, lastname: string, email: string }>(`${this.apiUrl}/user-info`, {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
         'Content-type': 'application/json'
@@ -24,11 +23,12 @@ export class UserService {
       map(result => ({
         name: result.firstname,
         surname: result.lastname,
-        email : result.email,
+        email: result.email,
         birthdate: null,
         idCardNumber: null,
         emso: null
-      }))
+      })),
+      catchError(this.handleError<User>('getKeyCloakUser'))
     );
   }
 
@@ -38,34 +38,41 @@ export class UserService {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
         'Content-type': 'application/json'
       }
-    });
+    }).pipe(
+      tap(exists => console.log(`User exists: ${exists}`)),
+      catchError(this.handleError<boolean>('checkUserExists'))
+    );
   }
 
   public addUser(user: User): Observable<User> {
-    return this.httpClient.post<User>(`${this.apiUrl}/users`, user, {
+    console.log('Sending request to add user:', user);
+    return this.httpClient.post<User>(`${this.apiUrl}/users/add`, user, {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
         'Content-type': 'application/json'
       }
     }).pipe(
-      tap(console.log)
+      tap(response => console.log('User added:', response)),
+      catchError(this.handleError<User>('addUser'))
     );
   }
 
-  public getHelloSessions(): Observable<any> { 
-    return this.httpClient.get(`${this.apiUrl}/api/sessions/generate`, {
+  public getHelloSessions(): Observable<any> {
+    return this.httpClient.get(`${this.apiUrl}/sessions/generate`, {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`
       }
     }).pipe(
-      tap(console.log),
-      catchError(error => {
-        console.error('Error loading sessions:', error);
-        return of([]); 
-      })
+      tap(response => console.log('Sessions:', response)),
+      catchError(this.handleError<any>('getHelloSessions', []))
     );
-  }  
-  
+  }
 
-
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(`${operation} failed: ${error.message}`);
+      console.error('Error details:', error);
+      return of(result as T);
+    };
+  }
 }

@@ -1,30 +1,31 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectorRef, inject, Pipe, signal } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Link } from './util/types/link.interface';
 import { User } from './util/types/user.interface';
 import { Store } from '@ngrx/store';
-import { Observable, map, tap } from 'rxjs';
-import * as UserActions from './store/actions/user.actions'
+import { Observable } from 'rxjs';
+import * as UserActions from './store/actions/user.actions';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { loadAuth } from './store/actions/auth.actions';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { UserService } from './service/user.service';
- 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ThemeToggleComponent, SideNavComponent, MatSidenavModule, NgIf, AsyncPipe,MatToolbarModule],
+  imports: [
+    RouterOutlet, ThemeToggleComponent, SideNavComponent, 
+    MatSidenavModule, NgIf, AsyncPipe, MatToolbarModule
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers:[Store]
+  providers: [Store]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   protected title = 'heron-gui';
   protected fullName = '';
   protected user$: Observable<User | null> | undefined;
@@ -81,10 +82,18 @@ export class AppComponent implements OnInit{
     this.removeIssParameter();
   }
 
-
-  test(){
-    let us;
-    this.user$?.subscribe((user) => us = user )
-    console.log(us)
+  test() {
+    console.log('test method called');
+    this.user$?.subscribe((user) => {
+      console.log('User from store:', user);
+      if (user) {
+        console.log('Calling addUser with:', user);
+        this.uservice.addUser(user).subscribe(response => {
+          console.log('User added successfully:', response);
+        }, error => {
+          console.error('Error adding user:', error);
+        });
+      }
+    });
   }
 }
