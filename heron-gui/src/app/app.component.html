@@ -5,11 +5,13 @@
   <mat-drawer-content>
     
     <mat-toolbar>
+      <ng-container class="greet"> 
       <h3>Dobrodošel</h3>     
        <div *ngIf="(user$ | async) as user" class="user">
         <h3>{{ user.name }}</h3>
         <h3>{{ user.surname }}</h3>
       </div>
+      </ng-container>
 
       <button (click)="test()">test</button>
     </mat-toolbar>

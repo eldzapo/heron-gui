@@ -1,31 +1,37 @@
-<div class="container"> 
-
-  <div class="picker">
-
-    <button mat-icon-button (click)="goToPreviousDay()"
-         matTooltip="Prejšni dan"
-          matTooltipHideDelay="100">
-      <span class="material-symbols-outlined">arrow_back_ios</span>
-    </button>
-
-    <h5> {{ formatDateTime(currentDate$ | async) }} </h5>
-
-    <button mat-icon-button (click)="goToNextDay()" 
-         matTooltip="Naslednji dan"
-          matTooltipHideDelay="100">
-      <span class="material-symbols-outlined">arrow_forward_ios</span>
-    </button>
-
-  </div>
-
-<ng-container *ngIf="(filteredSessions$ | async) as filteredSessions">
-    <ng-container *ngIf="filteredSessions.length > 0; else noSessions">
-      <div *ngFor="let session of filteredSessions">
-        <heron-session [data]="session"></heron-session>
+<div class="container">
+  <div class="split-screen">
+    <div class="left-side">
+      <div class="picker">
+        <button mat-icon-button (click)="goToPreviousDay()" matTooltip="Prejšni dan" matTooltipHideDelay="100">
+          <span class="material-symbols-outlined">arrow_back_ios</span>
+        </button>
+        <h5 class="date">{{ formatDateTime(currentDate$ | async) }}</h5>
+        <button mat-icon-button (click)="goToNextDay()" matTooltip="Naslednji dan" matTooltipHideDelay="100">
+          <span class="material-symbols-outlined">arrow_forward_ios</span>
+        </button>
       </div>
-    </ng-container>
-    <ng-template #noSessions>
-      <p>No sessions found for today.</p>
-    </ng-template>
-  </ng-container>
+
+      <ng-container *ngIf="(filteredSessions$ | async) as filteredSessions">
+        <ng-container *ngIf="filteredSessions.length > 0; else noSessions">
+          <div *ngFor="let session of filteredSessions">
+            <heron-session [data]="session" (sessionClicked)="handleSessionClick($event)"></heron-session>
+          </div>
+        </ng-container>
+        <ng-template #noSessions>
+          <p>No sessions found for today.</p>
+        </ng-template>
+      </ng-container>
+    </div>
+
+    <div class="right-side">
+      <ng-container *ngIf="(session4Options$ | async) as session4Options">
+        <ng-container *ngIf="session4Options; else pickOne">
+          <heron-session-options [session]="session4Options"></heron-session-options>
+        </ng-container>
+        <ng-template #pickOne>
+          <p>Izberi termin</p>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
 </div>

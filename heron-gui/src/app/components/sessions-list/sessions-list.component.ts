@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Observable, BehaviorSubject, of } from 'rxjs';
+import { Observable, BehaviorSubject, of, Subject } from 'rxjs';
 import { Session } from '../../util/types/sessions.interface';
 import { UserService } from '../../service/user.service';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import {format} from 'date-fns/format';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { SessionOptionsComponent } from '../session-options/session-options.component';
 
 @Component({
   selector: 'heron-sessions-list',
@@ -15,13 +16,14 @@ import {MatTooltipModule} from '@angular/material/tooltip';
   templateUrl: './sessions-list.component.html',
   styleUrls: ['./sessions-list.component.scss'],
   imports: [
-    CommonModule, SessionComponent,MatIconModule,MatButtonModule,MatTooltipModule
+    CommonModule, SessionComponent,MatIconModule,MatButtonModule,MatTooltipModule,SessionOptionsComponent
   ]
 })
 export class SessionsListComponent implements OnInit {
   protected filteredSessions$: Observable<Session[]> | undefined;
   private currentDateSubject: BehaviorSubject<Date>;
   protected currentDate$: Observable<Date>;
+  protected session4Options$ : Observable<Session> | undefined;
   private sessions: Session[] = [];
   protected loading = true;
 
@@ -81,12 +83,17 @@ export class SessionsListComponent implements OnInit {
     prevDate.setDate(prevDate.getDate() - 1);
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Ensure today's date has no time part for comparison
+    today.setHours(0, 0, 0, 0);
     if (prevDate >= today) {
       this.currentDateSubject.next(prevDate);
       this.loadAndFilterSessions();
       this.cdr.detectChanges();
     }
   } 
+
+  protected handleSessionClick(session: Session | null): void {
+    const sess = session
+    sess ? this.session4Options$ = of(sess) : null;
+  }
   
 }

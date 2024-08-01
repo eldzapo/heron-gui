@@ -19,7 +19,7 @@ import { UserService } from './service/user.service';
   standalone: true,
   imports: [
     RouterOutlet, ThemeToggleComponent, SideNavComponent, 
-    MatSidenavModule, NgIf, AsyncPipe, MatToolbarModule
+    MatSidenavModule, NgIf, AsyncPipe, MatToolbarModule,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

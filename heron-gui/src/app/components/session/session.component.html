@@ -1,14 +1,14 @@
 
 <mat-card>
     <mat-card-header>
-      <mat-card-title> {{ getTimeSlot(formatDateTime(data?.startDate)) }}</mat-card-title>
+      <mat-card-title> {{ (data?.startDate | customDateFormat) | timeSlot }}</mat-card-title>
     <mat-card-content class="date">
-      <p *ngIf="data?.startDate">Start {{ formatDateTime(data?.startDate)}}</p>
+      <p *ngIf="data?.startDate">Start {{ data?.startDate | customDateFormat}}</p>
       <mat-divider></mat-divider>
-      <p *ngIf="data?.endDate">Konec {{formatDateTime(data?.endDate)}} </p>
+      <p *ngIf="data?.endDate">Konec {{data?.endDate | customDateFormat}} </p>
     </mat-card-content>
     </mat-card-header>
     <mat-card-actions>
-      <button mat-button  (click)="openDialog('0ms', '0ms')">Reserve</button>
+      <button mat-button  (click)="onSessionClick()">Izberi</button>
     </mat-card-actions>
 </mat-card>
