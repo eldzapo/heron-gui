@@ -46,7 +46,7 @@ export class UserService {
 
   public addUser(user: User): Observable<User> {
     console.log('Sending request to add user:', user);
-    return this.httpClient.post<User>(`${this.apiUrl}/users/add`, user, {
+    return this.httpClient.post<User>(`${this.apiUrl}/customers`, user, {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
         'Content-type': 'application/json'
