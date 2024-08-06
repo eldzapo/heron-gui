@@ -42,7 +42,7 @@ export class SessionsListComponent implements OnInit {
 
  protected loadAndFilterSessions(): void {
     const todayDate = this.getFormattedDate(this.currentDateSubject.getValue());
-    this.sessionService.getHelloSessions().subscribe((result: { [key: string]: Session[] }) => {
+    this.sessionService.getSessions().subscribe((result: { [key: string]: Session[] }) => {
       for (const key in result) {
         if (result.hasOwnProperty(key) && key === todayDate) {
           this.sessions = result[key];

@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
   protected loading$: Observable<boolean> | undefined;
   protected token$: Observable<boolean> | undefined;
   protected tokenLoading$: Observable<boolean> | undefined;
-  private uservice = inject(UserService);
+  private userService = inject(UserService);
   private store = inject(Store<{ user: { user: User | null, loading: boolean } }>);
 
   public isAuthenticated = false;
@@ -77,23 +77,28 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     window.onload = this.removeIssParameter;
-    this.store.dispatch(UserActions.loadUser());
     this.store.dispatch(loadAuth());
     this.removeIssParameter();
-  }
 
-  test() {
-    console.log('test method called');
-    this.user$?.subscribe((user) => {
-      console.log('User from store:', user);
-      if (user) {
-        console.log('Calling addUser with:', user);
-        this.uservice.addUser(user).subscribe(response => {
-          console.log('User added successfully:', response);
-        }, error => {
-          console.error('Error adding user:', error);
-        });
+    this.userService.getKeyCloakUser().subscribe(
+      user => {
+        this.userService.checkIfUserExists(user.email).subscribe(
+          exists => {
+            if (exists) {
+              this.store.dispatch(UserActions.loadUserSuccess({ user }));
+            } else {
+              this.userService.addUser(user).subscribe(
+                newUser => {
+                  this.store.dispatch(UserActions.addUser({ user: newUser }));
+                }
+              );
+            }
+          }
+        );
+      },
+      error => {
+        console.error('Error fetching KeyCloak user:', error);
       }
-    });
+    );
   }
 }

@@ -1,10 +1,14 @@
 <mat-card class="body">
-<mat-card-content class="date"> 
-    <p>{{ (session?.startDate | customDateFormat) | timeSlot }}</p> 
-    <p>Start {{ session?.startDate | customDateFormat }}</p> 
-    <p>Konec {{ session?.endDate | customDateFormat }}</p>
-
-    <button mat-raised-button>Rezerviraj</button>
-    <button mat-raised-button>Trening z trenerjem</button>
-</mat-card-content>
-</mat-card>
+    <mat-card-content *ngIf="session; else noSessionContent">
+      <p>{{ (session.startDate | customDateFormat) | timeSlot }}</p>
+      <p>Start {{ session.startDate | customDateFormat }}</p>
+      <p>Konec {{ session.endDate | customDateFormat }}</p>
+  
+      <button mat-raised-button>Rezerviraj</button>
+      <button mat-raised-button>Trening z trenerjem</button>
+    </mat-card-content>
+    <ng-template #noSessionContent>
+      <p>Pick your session</p>
+    </ng-template>
+  </mat-card>
+  

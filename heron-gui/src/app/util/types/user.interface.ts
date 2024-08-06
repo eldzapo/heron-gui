@@ -4,4 +4,5 @@ export interface User  {
     birthdate: string | undefined | null,
     idCardNumber: string | undefined | null,
     emso:string | undefined | null,
+    email: string
   }

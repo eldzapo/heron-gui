@@ -32,38 +32,34 @@ export class UserService {
     );
   }
 
-  private checkUserExists(email: string): Observable<boolean> {
-    return this.httpClient.get<boolean>(`${this.apiUrl}/users/exists/${email}`, {
+  public checkIfUserExists(email: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${this.apiUrl}/customers/by-email/${email}`, {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
         'Content-type': 'application/json'
       }
     }).pipe(
-      tap(exists => console.log(`User exists: ${exists}`)),
-      catchError(this.handleError<boolean>('checkUserExists'))
+      catchError(this.handleError<boolean>('checkIfUserExists'))
     );
-  }
+  }  
 
   public addUser(user: User): Observable<User> {
-    console.log('Sending request to add user:', user);
     return this.httpClient.post<User>(`${this.apiUrl}/customers`, user, {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
         'Content-type': 'application/json'
       }
     }).pipe(
-      tap(response => console.log('User added:', response)),
       catchError(this.handleError<User>('addUser'))
     );
   }
 
-  public getHelloSessions(): Observable<any> {
+  public getSessions(): Observable<any> {
     return this.httpClient.get(`${this.apiUrl}/sessions/generate`, {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`
       }
     }).pipe(
-      tap(response => console.log('Sessions:', response)),
       catchError(this.handleError<any>('getHelloSessions', []))
     );
   }
