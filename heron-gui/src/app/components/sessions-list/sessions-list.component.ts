@@ -9,6 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { SessionOptionsComponent } from '../session-options/session-options.component';
+import { SessionsService } from '../../service/sessions.service';
 
 @Component({
   selector: 'heron-sessions-list',
@@ -29,7 +30,7 @@ export class SessionsListComponent implements OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private sessionService: UserService
+    private sessionService: SessionsService
   ) {
     this.currentDateSubject = new BehaviorSubject<Date>(new Date());
     this.currentDate$ = this.currentDateSubject.asObservable();

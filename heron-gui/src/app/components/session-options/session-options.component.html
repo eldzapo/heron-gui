@@ -4,7 +4,7 @@
       <p>Start {{ session.startDate | customDateFormat }}</p>
       <p>Konec {{ session.endDate | customDateFormat }}</p>
   
-      <button mat-raised-button>Rezerviraj</button>
+      <button mat-raised-button (click)="reserve(session)">Rezerviraj</button>
       <button mat-raised-button>Trening z trenerjem</button>
     </mat-card-content>
     <ng-template #noSessionContent>

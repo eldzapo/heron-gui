@@ -14,7 +14,7 @@ export class UserService {
   constructor(private oauthService: OAuthService, private httpClient: HttpClient) { }
 
   public getKeyCloakUser(): Observable<User> {
-    return this.httpClient.get<{ firstname: string, lastname: string, email: string }>(`${this.apiUrl}/user-info`, {
+    return this.httpClient.get<{ firstname: string, lastname: string, email: string, username: string }>(`${this.apiUrl}/user-info`, {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
         'Content-type': 'application/json'
@@ -26,20 +26,22 @@ export class UserService {
         email: result.email,
         birthdate: null,
         idCardNumber: null,
-        emso: null
+        emso: null,
+        id:null,
+        username: result.username
       })),
       catchError(this.handleError<User>('getKeyCloakUser'))
     );
   }
 
-  public checkIfUserExists(email: string): Observable<boolean> {
-    return this.httpClient.get<boolean>(`${this.apiUrl}/customers/by-email/${email}`, {
+  public checkIfUserExists(email: string): Observable<User> {
+    return this.httpClient.get<User>(`${this.apiUrl}/customers/by-email/${email}`, {
       headers: {
         'Authorization': `Bearer ${this.oauthService.getAccessToken()}`,
         'Content-type': 'application/json'
       }
     }).pipe(
-      catchError(this.handleError<boolean>('checkIfUserExists'))
+      catchError(this.handleError<User>('checkIfUserExists'))
     );
   }  
 
@@ -54,17 +56,7 @@ export class UserService {
     );
   }
 
-  public getSessions(): Observable<any> {
-    return this.httpClient.get(`${this.apiUrl}/sessions/generate`, {
-      headers: {
-        'Authorization': `Bearer ${this.oauthService.getAccessToken()}`
-      }
-    }).pipe(
-      catchError(this.handleError<any>('getHelloSessions', []))
-    );
-  }
-
-  private handleError<T>(operation = 'operation', result?: T) {
+  public handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(`${operation} failed: ${error.message}`);
       console.error('Error details:', error);

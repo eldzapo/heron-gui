@@ -7,7 +7,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { Link } from './util/types/link.interface';
 import { User } from './util/types/user.interface';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 import * as UserActions from './store/actions/user.actions';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { loadAuth } from './store/actions/auth.actions';
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
         this.userService.checkIfUserExists(user.email).subscribe(
           exists => {
             if (exists) {
-              this.store.dispatch(UserActions.loadUserSuccess({ user }));
+              this.store.dispatch(UserActions.loadUserSuccess( { user : exists }));
             } else {
               this.userService.addUser(user).subscribe(
                 newUser => {

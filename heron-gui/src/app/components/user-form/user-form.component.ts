@@ -13,7 +13,8 @@ let USER : User = {
   "birthdate": null,
   "idCardNumber": null,
   "emso":null,
-  "email": ""
+  "email": "",
+  "id":null
 }
 
 interface KKResult {

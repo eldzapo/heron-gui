@@ -1,8 +1,10 @@
 export interface Session {
-    id: number;
+    id: Number | null | undefined;
     startDate: Date;
     endDate: Date;
     reserved: boolean;
-    userId: number;
+    userId?: number | null | undefined;
+    customer?: number | null | undefined;
+
   }
   
