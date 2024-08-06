@@ -29,18 +29,20 @@ export class SessionOptionsComponent {
   }
 
   protected reserve(session: Session){
+  
     this.user$?.subscribe((user) => {
-      if(user)
-      this.workoutService.addWorkout({
-        id:null,
-        customer: user.id,
-        startDate: session.startDate,
-        endDate: session.endDate,
-        reserved: true  
-      }).subscribe(console.log)
+      if(user){
+        const sessionDto : Session = {
+          id : null,
+          customer: user,
+          startDate: session.startDate,
+          endDate: session.endDate,
+          reserved: true
+        }
+        this.workoutService.addWorkout(sessionDto).subscribe(console.log)
+      }
       else console.log('err')
     })
-    console.log(session);
   }
 
 }
